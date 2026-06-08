@@ -5,6 +5,7 @@
 - Alguien
 - Persona
 - etc.
+- Narancio D. Lucas
 
 ## Capturas
 
@@ -17,6 +18,6 @@
 
 ## Otros
 
-- Curso/Facultad
+- materia: Programación con objetos 1 / Universidad Nacional de Hurlingham
 - Versión de wollok
 - Una vez terminado, no tenemos problemas en que el repositorio sea público / queremos manternerlo privado
