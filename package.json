@@ -1,0 +1,8 @@
+{
+    "name": "cuatro-en-linea",
+    "version": "1.0.0",
+    "resourceFolder": "assets",
+    "wollokVersion": "4.2.3",
+    "author": "Alfa",
+    "license": "ISC"
+  }
