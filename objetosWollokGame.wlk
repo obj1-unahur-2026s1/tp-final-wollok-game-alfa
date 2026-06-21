@@ -10,7 +10,11 @@ object unCharacter{
 		position = game.origin()
 	}*/
 }
-
+class Ficha {
+  var property posicion
+  var property color 
+  method image() = "ficha" + color + ".png"
+}
 object fichaRoja{
   var property image = "fichaRoja.png"
   var property position = game.center()
