@@ -11,8 +11,13 @@ object unCharacter{
 	}*/
 }
 
-object unObjeto{
-  //var property image = "cherry.png"
-  //var property position = game.center()
+object fichaRoja{
+  var property image = "fichaRoja.png"
+  var property position = game.center()
+  //method chocarCon(unCharacter){}
+}
+object fichaVerde{
+  var property image = "fichaVerde.png"
+  var property position = game.center()
   //method chocarCon(unCharacter){}
 }
