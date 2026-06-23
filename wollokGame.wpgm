@@ -1,9 +1,9 @@
 import objetosWollokGame.*
 program NuestroGame {
 	game.title("NuestroGame")
-	game.width(20)
-	game.height(20)
-	game.cellSize(32)
+	game.width(7)
+	game.height(9)
+	game.cellSize(200)
 	game.boardGround("tablero.png")
 
 	game.addVisualCharacter(flechaSelectora)

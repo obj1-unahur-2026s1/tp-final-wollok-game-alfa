@@ -1,4 +1,5 @@
 import wollok.game.*
+
 // object unCharacter{
 //   //var property position = game.origin()
 //   //var property image = "unaImagen.png"
