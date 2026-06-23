@@ -6,9 +6,7 @@ program NuestroGame {
 	game.cellSize(200)
 	game.boardGround("tablero.png")
 
-	game.addVisualCharacter(flechaSelectora)
-	game.addVisual(fichaRoja)
-	game.addVisual(fichaVerde)
+	(1..6).forEach({n => keyboard.num(n).onPressDo{tablero.realizarJugada(n)} })
 
 	game.start()
 }
