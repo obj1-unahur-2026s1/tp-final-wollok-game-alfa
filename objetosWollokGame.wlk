@@ -10,10 +10,21 @@ import wollok.game.*
 // 	}*/
 // }
 class Ficha {
-  var property posicion
-  var property color 
+  const property posicion
+  const property color 
   method image() = "ficha" + color + ".png"
 }
+class Jugador {
+  const property color
+  const property jugadorSiguiente
+  const property casillerosOcupados = []
+  method image() = "jugador" + color + ".png"
+  method ocuparCasillero(unCasillero){
+    // Si dicha posición en el tablero está libre
+    casillerosOcupados.add(unCasillero)
+  }
+}
+
 object fichaRoja{
   var property image = "fichaRoja.png"
   var property position = game.at(3,3)
