@@ -52,9 +52,6 @@ object tablero {
 
   method iniciar(){
     game.clear()
-    // game.width(7)
-	  // game.height(9)
-    // game.cellSize(200)
     game.addVisual(self)
     (1..6).forEach({n => keyboard.num(n).onPressDo{self.realizarJugada(n)} })
   }
