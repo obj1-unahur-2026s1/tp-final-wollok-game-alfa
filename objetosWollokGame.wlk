@@ -53,7 +53,7 @@ object tablero {
   method iniciar(){
     game.clear()
     game.addVisual(self)
-    (1..6).forEach({n => keyboard.num(n).onPressDo{self.realizarJugada(n)} })
+    (1..7).forEach({n => keyboard.num(n).onPressDo{self.realizarJugada(n - 1)} })
   }
   method verJugada(columna, color){
     game.addVisual(
@@ -77,7 +77,7 @@ object tablero {
   }
 
   method oponente(jugador) {
-    return jugadores.find({j => j != jugadorActual})
+    return jugadores.find({j => j != jugadorActual}) // Como la lista de jugadores es de 2 busca el que no sea el actual
   }
 
   method cambiarTurno() {
@@ -88,64 +88,66 @@ object tablero {
     if (columnas.get(columna).size() >= 6) {
       throw new Exception(message = "La columna está llena")
     }
-    var fila = columnas.get(columna).size()
+    var fila = columnas.get(columna).size() // Consigo la fila para el position de la ficha
     var ficha = new Ficha(color = jugadorActual.color(),position=game.at(columna,fila))
-    columnas.get(columna).add(ficha)
+    columnas.get(columna).add(ficha) // Agrego la ficha y el visual
     game.addVisual(ficha)
   }
   
   method realizarJugada(columna){
     self.agregarFicha(columna)
-    var fila = columnas.get(columna).size() - 1
+    var fila = columnas.get(columna).size() - 1 // Consigo la fila para poder verificar las victorias
     
     if(self.hayVictoria(columna,fila,jugadorActual.color())){
-      game.say(self.fichaEn(columna,fila),"Ganó " + jugadorActual.color())
+      game.say(self.fichaEn(columna,fila),"Ganó " + jugadorActual.color()) // Si un jugador gana hace que la ficha diga que ganó
+                                                                           // habría que agregar algo para que aparezca un cartel informandolo y salga al menú capaz
     }
     else {
       self.cambiarTurno()
     }
   }
 
-  method hayVictoria(columna,fila,color) {
+  method hayVictoria(columna,fila,color) { // Verifica todas las posibles victorias
     return self.hayVictoriaHorizontal(columna,fila,color) || self.hayVictoriaDiagonalDerecha(columna,fila,color) || self.hayVictoriaDiagonalIzquierda(columna,fila,color) || self.hayVictoriaVertical(columna,fila,color)
   }
 
   method fichaEn(columna,fila) {
     if(columna < 0 || columna >= columnas.size()) {
-      return null // Pongo null para que si no es válido no rompa el programa al probarlo
-    }
+      return null // Si la columna está fuera de rango devuelve null
+    }             // Pongo null para que si no es válido corte la recursividad en el método contar
+    
     var col = columnas.get(columna)
     
     if (fila < 0 || fila >= col.size()) {
       return null // idem que en columna
     }
-
-    return col.get(fila)
+    return col.get(fila) // Si pasa los 2 if anteriores retorno la ficha
   }
 
-  method contar(columna,fila,dx,dy,color) {
-    var ficha = self.fichaEn(columna,fila)
+  method contar(columna,fila,dx,dy,color) {  // Paso por parametro la columna, fila y color. Además dx y dy son números para poder ir buscando en
+    var ficha = self.fichaEn(columna,fila)   // las casillas lindantes
 
-    if (ficha == null || ficha.color() != color) {
-      return 0
+    if (ficha == null || ficha.color() != color) { // Si en el método fichaEn retorno null retorna 0, cortando la recursividad
+      return 0                                     // Lo mismo si encuentra una ficha de otro color
     }
 
-    return 1 + self.contar(columna + dx,fila + dy, dx, dy, color)
+    return 1 + self.contar(columna + dx,fila + dy, dx, dy, color) // Return recursivo para contar fichas
   }
 
   method hayVictoriaHorizontal(columna,fila,color) {
     return 1 + self.contar(columna + 1,fila,1,0,color) + self.contar(columna - 1,fila, -1, 0,color) >= 4
-  }         // El primer self.contar cuenta hacia la derecha y el segundo hacia la izquierda
+  }         // El primer self.contar cuenta hacia la derecha y el segundo hacia la izquierda, al ser horizontal dy vale 0, ya que hay que moverse en la misma fila
 
   method hayVictoriaDiagonalDerecha(columna,fila,color) {
-    return 1 + self.contar(columna + 1,fila - 1,1,-1,color) + self.contar(columna - 1,fila + 1,-1,1,color) >= 4
-  }
+    return 1 + self.contar(columna + 1, fila - 1 , 1 , -1 , color) + self.contar(columna - 1, fila + 1 , -1 , 1 , color) >= 4
+  }                      //columna      fila       dx  dy   color, cada self.contar busca para cada lado de la diagonal, si encuentra 3 o más fichas devuelve true
+                         //verificando que el jugador ganó
   method hayVictoriaDiagonalIzquierda(columna,fila,color) {
-    return 1 + self.contar(columna + 1,fila + 1,1,1,color) + self.contar(columna - 1,fila - 1,-1,-1,color) >= 4
-  }
+    return 1 + self.contar(columna + 1 , fila + 1 , 1 , 1 , color) + self.contar(columna - 1 , fila - 1 , -1 , -1 , color) >= 4
+  }             // idem que el otro victoria diagonal, pero en sentido contrario
 
   method hayVictoriaVertical(columna,fila,color) {
     return 1 + self.contar(columna,fila - 1,0,-1,color) >= 4
-  }
+  }           // este contar solo busca hacia abajo, ya que nunca podría haber una ficha arriba de una recién puesta
 }
 
