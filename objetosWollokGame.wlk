@@ -75,8 +75,12 @@ object tablero {
 
   method iniciar(){
     game.clear()
+    self.limpiarColumnas()
     game.addVisual(self)
     (1..7).forEach({n => keyboard.num(n).onPressDo{self.realizarJugada(n - 1)} })
+  }
+  method limpiarColumnas(){
+    columnas.forEach({c=> c.clear()})
   }
   method verJugada(columna, color){
     game.addVisual(
