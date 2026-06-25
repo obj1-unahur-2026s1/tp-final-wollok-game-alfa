@@ -25,7 +25,9 @@ object modosDeJuego {
         keyboard.num1().onPressDo({modo1v1.iniciar()})
         keyboard.num2().onPressDo({modoIANormal.iniciar()})
         keyboard.num3().onPressDo({modoIAImposible.iniciar()})
+        
         keyboard.s().onPressDo({menuPrincipal.iniciar()})
+        keyboard.r().onPressDo({tablero.iniciar()})
     }
 }
 object modo1v1 {
@@ -46,7 +48,7 @@ object modoIAImposible {
 object instrucciones {
     const property position = game.origin()
     method image(){
-        return // Acá debe estar la imagen de modos de instrucciones
+        return "instrucciones.png"
     }
     method iniciar(){
         game.clear()
@@ -68,7 +70,7 @@ object creditos {
     }
 }
 object botonDeVolver {
-    const property position = game.at(5,5)  // Se puede modificar la posición
+    const property position = game.at(6,2)  // Se puede modificar la posición
     method image(){
         return "botonVolver.png"
     }

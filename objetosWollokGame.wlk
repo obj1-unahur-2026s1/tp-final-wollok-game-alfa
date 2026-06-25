@@ -9,9 +9,8 @@ import menus.*
 // 		position = game.origin()
 // 	}*/
 // }
-object cuatroEnLinea {
+object cuatroEnLinea{
 
-   
   //Config Audio
   const music = game.sound("InideGame.mp3")
 
@@ -123,7 +122,8 @@ object tablero {
     var fila = columnas.get(columna).size() - 1 // Consigo la fila para poder verificar las victorias
     
     if(self.hayVictoria(columna,fila,jugadorActual.color())){
-      gestorDeSonidos.victoria()
+      victoria.sonido()
+      game.addVisual(victoria)
       game.say(self.fichaEn(columna,fila),"Ganó " + jugadorActual.color()) // Si un jugador gana hace que la ficha diga que ganó
                                                                            // habría que agregar algo para que aparezca un cartel informandolo y salga al menú capaz
     }
@@ -175,17 +175,15 @@ object tablero {
   method hayVictoriaVertical(columna,fila,color) {
     return 1 + self.contar(columna,fila - 1,0,-1,color) >= 4
   }           // este contar solo busca hacia abajo, ya que nunca podría haber una ficha arriba de una recién puesta
+  
+  
 }
 
-object gestorDeSonidos {
-  const sonidoFicha = game.sound("caida.wav")
-  const sonidoVictoria = game.sound("congratulations.mp3")
 
-  method reproducirFicha(){
-    sonidoFicha.volume(0.8)
-    sonidoFicha.play()
-  }
-  method victoria(){
+object victoria {
+  var property image = "ganaste.png"
+  const sonidoVictoria = game.sound("congratulations.mp3")
+  method sonido(){
     sonidoVictoria.volume(0.9)
     sonidoVictoria.play()
   }
