@@ -58,7 +58,7 @@ object flechaSelectora {
 object tablero {
   const property image = "tablero.png"
   const property position = game.origin()
-  const columnas = [
+  const property columnas = [
 	[],
   [],
   [],
@@ -100,7 +100,7 @@ object tablero {
   }
 
   method oponente(jugador) {
-    return jugadores.find({j => j != jugadorActual}) // Como la lista de jugadores es de 2 busca el que no sea el actual
+    return jugadores.find({j => j != jugador}) // Como la lista de jugadores es de 2 busca el que no sea el actual
   }
 
   method cambiarTurno() {
@@ -176,6 +176,49 @@ object tablero {
     return 1 + self.contar(columna,fila - 1,0,-1,color) >= 4
   }           // este contar solo busca hacia abajo, ya que nunca podría haber una ficha arriba de una recién puesta
   
+  //agregado por tomas 25/06/ (LO DEJO ACLARADO POR SI FALLA YA SABEMOS DONDE BUSCAR)
+  method esJugadaGanadora(columna, unJugador) {
+    //este metodo utiliza una ficha fantasma para detectar que pasa si una ficha real se coloca en la posicion, con esto asi se pueden reutilizar los metodos que detectan victorias
+    var band=true
+    if(self.columnaLlena(columna)) {
+      band=false
+    }else{
+      self.agregarFichaTemporal(columna, unJugador.color())
+      const fila = columnas.get(columna).size() - 1
+      band = self.hayVictoria(columna,fila,unJugador.color())
+      self.sacarFichaTemporal(columna)
+    }
+    return band
+  }
+
+  method columnaAleatoria() {
+
+    const disponibles = []
+    var i = 0
+
+    columnas.forEach { col =>
+        if(col.size() < 6) {
+            disponibles.add(i)
+        }
+        i = i + 1
+    }
+
+    return disponibles.anyOne()
+  }
+
+  method columnaLlena(columna) { //Lo uso para detectar en jugada ganadora
+    return columnas.get(columna).size() >= 6
+  }
+
+  method agregarFichaTemporal(columna, color) {//Lo uso para detectar en jugada ganadora
+    columnas.get(columna).add(new Ficha(color = color, position = game.at(columna, columnas.get(columna).size())))
+  }
+
+  method sacarFichaTemporal(columna) {//Lo uso para detectar en jugada ganadora
+    const col = columnas.get(columna)
+    col.remove(col.last())
+  }
+  //agregado por tomas 25/06/ (LO DEJO ACLARADO POR SI FALLA YA SABEMOS DONDE BUSCAR)
   
 }
 

@@ -1,81 +1,129 @@
-object ia{
-    const property probocaiones = []
-    var dificultad=estandar
-
-    method cambiarDificultad(unaDificultad){dificultad=unaDificultad}
-
-    method realizarMovimiento(unaPosicion){
-        //ESTO SE DEFINE POR COMO SE UTILIZARA EL TABLERO
+import objetosWollokGame.*
+class IA inherits Jugador{
+    const property probocaciones = []
+    const dificultad
+    
+    method insultar() {
+        return probocaciones.anyOne()
     }
 
-    method insultar(){
-        return probocaiones.anyOne()
-    }
-
-    method estudiarTablero(unaPosicion){
-        dificultad.mejorMovimiento(self, unaPosicion) //ESTO LLAMA A realiazrMOVIEMIENTO POR LO QUE EL MOVIMIENTO A EJECUTAR LO DECIDE LA DIFICULTAD LLAMANDO AL METODO DE IA
-    }
-
-    method mejorMovimiento(){
-        //ESTO DEBERIA DEVOLVER LA POSICION DONDE PONER UNA FICHA SIGNIFICA LA VICTORIA
-    }
-
-    method contratacar(unJugador){
-        //ESTO DEBERIA DEVOLVER UNA POSICION DONDE CAGAR AL JUGADOR
-    }
-
-}
-
-
-object estandar{
-    method mejorMovimiento(unaIA, unaPosicion){
-        if (self.puedeGanar(unaIA)){
-            unaIA.realizarMovimiento(unaIA.mejorMovimiento())
-        }else{
-            unaIA.realizarMovimiento(unaPosicion)
-        }
-    }
-
-    method puedeGanar(entidad){
-        return true //ESTO SE CAMBIA CUANDO YA ESTE DEFINIDO COMO SE DETECTAN LAS VICTORIAS POSIBLES
-    }
-}
-
-object dificil{
-    method mejorMovimiento(unaIA, unaPosicion){
-        if (self.puedeGanar(unJugador)){ //UN JUGADOR NO ESTA DEFINIDO TODAVIA POR ESO NO COMPLETO LO QUE FALTA
-            unaIA.realizarMovimiento(unaIA.contratacar(unJugador))
-
-        }else if(self.puedeGanar(unaIA)){
-            unaIA.realizarMovimiento(unaIA.mejorMovimiento())
-            
-        }else{
-            unaIA.realizarMovimiento(unaPosicion)
-        }
-    }
-
-    method puedeGanar(entidad){
-        return true //ESTO SE CAMBIA CUANDO YA ESTE DEFINIDO COMO SE DETECTAN LAS VICTORIAS POSIBLES, DEJO ENTIDAD PORQUE PODRIAMOS USAR EL METODO PARA JUGADOR TAMBIEN
+    method jugarEn(unTablero) {
+        dificultad.jugar(self, unTablero)
     }
 }
 
 
-object extrema{
-    method mejorMovimiento(unaIA, unaPosicion){
-        if (not self.puedeGanar(unaIA)){
-            if (self.puedeGanar(unJugador)){
-                unaIA.realizarMovimiento(unaIA.contratacar(unJugador))
-                unaIA.insultar()
-            }else if(not self.puedeGanar(unJugador)){
-                unaIA.realizarMovimiento(unaIA.contratacar(unJugador))
-                unaIA.insultar()
+object estandar {
+    // es una criatura pobre, solo juega para ganar y sino juega cualquier cosa
+    method jugar(ia, tablero) {
+
+        var i = 0
+        var jugada = 00
+
+        tablero.columnas().forEach { col =>
+            if(tablero.esJugadaGanadora(i, ia) && jugada == 00) {
+                jugada = i
             }
-        }else{
-            unaIA.realizarMovimiento(unaIA.mejorMovimiento())
+            i = i + 1
+        }
+
+        if(jugada != 00) {
+            tablero.realizarJugada(jugada)
+        } else {
+            tablero.realizarJugada(tablero.columnaAleatoria())
         }
     }
+}
 
-    method puedeGanar(entidad){
-        return true //ESTO SE CAMBIA CUANDO YA ESTE DEFINIDO COMO SE DETECTAN LAS VICTORIAS POSIBLES, DEJO ENTIDAD PORQUE PODRIAMOS USAR EL METODO PARA JUGADOR TAMBIEN
+object dificil {
+
+    method jugar(ia, tablero) {
+
+        const enemigo = tablero.oponente(ia)
+
+        var i = 0
+        var jugada = 00
+
+        // 1. primero busca neutralizar enemigo
+        tablero.columnas().forEach { col =>
+
+            if(jugada == 00 && tablero.esJugadaGanadora(i, enemigo)) {
+                jugada = i
+            }
+
+            i = i + 1
+        }
+
+        // 2. segunda prioridad es buscar la ganadora propia sino encuentra juega a lo estandar
+        if(jugada == 00) {
+
+            i = 0
+
+            tablero.columnas().forEach { col =>
+
+                if(jugada == 00 && tablero.esJugadaGanadora(i, ia)) {
+                    jugada = i
+                }
+
+                i = i + 1
+            }
+        }
+
+        if(jugada != 00) {
+            tablero.realizarJugada(jugada)
+        } else {
+            tablero.realizarJugada(tablero.columnaAleatoria())
+        }
+    }
+}
+
+
+object extrema {
+
+    method jugar(ia, tablero) {
+
+        const enemigo = tablero.oponente(ia)
+
+        var i = 0
+        var jugada = 00
+
+        // lo primero que prioriza es ganar
+        tablero.columnas().forEach { col =>
+
+            if(jugada == 00 && tablero.esJugadaGanadora(i, ia)) {
+                jugada = i
+            }
+
+            i = i + 1
+        }
+
+        // su segunda prioridad es bloquear al jugador
+        if(jugada == 00) {
+
+            i = 0
+
+            tablero.columnas().forEach { col =>
+
+                if(jugada == 00 && tablero.esJugadaGanadora(i, enemigo)) {
+                    jugada = i
+                }
+
+                i = i + 1
+            }
+        }
+
+        // esto es algo que se me ocurrio para la mayor dificultad, podriamos decir que el centro es lo preferido en este tipo de juegos, entonces cree una lista con los mas centricos en el medio para que utilice
+        if(jugada == 00) {
+
+            const orden = [3,2,4,1,5,0,6]
+
+            orden.forEach { c =>
+                if(jugada == 00 && not tablero.columnaLlena(c)) {
+                    jugada = c
+                }
+            }
+        }
+
+        tablero.realizarJugada(jugada)
     }
 }
