@@ -78,6 +78,7 @@ object tablero {
     self.limpiarColumnas()
     game.addVisual(self)
     (1..7).forEach({n => keyboard.num(n).onPressDo{self.realizarJugada(n - 1)} })
+    keyboard.s().onPressDo({modosDeJuego.iniciar()})
   }
   method limpiarColumnas(){
     columnas.forEach({c=> c.clear()})
@@ -126,10 +127,9 @@ object tablero {
     var fila = columnas.get(columna).size() - 1 // Consigo la fila para poder verificar las victorias
     
     if(self.hayVictoria(columna,fila,jugadorActual.color())){
-      victoria.sonido()
-      game.addVisual(victoria)
-      game.say(self.fichaEn(columna,fila),"Ganó " + jugadorActual.color()) // Si un jugador gana hace que la ficha diga que ganó
-                                                                           // habría que agregar algo para que aparezca un cartel informandolo y salga al menú capaz
+      game.sound("congratulations.mp3")
+      victoria.iniciar()
+
     }
     else {
       self.cambiarTurno()
@@ -228,10 +228,12 @@ object tablero {
 
 
 object victoria {
-  var property image = "ganaste.png"
-  const sonidoVictoria = game.sound("congratulations.mp3")
-  method sonido(){
-    sonidoVictoria.volume(0.9)
-    sonidoVictoria.play()
+  var property image = "pantallaGanaste.png"
+  const property position = game.origin()
+  method iniciar(){
+    game.clear()
+    game.addVisual(self)
+    keyboard.s().onPressDo({menuPrincipal.iniciar()})
+    keyboard.r().onPressDo({tablero.iniciar()})
   }
 }

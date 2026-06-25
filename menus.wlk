@@ -20,7 +20,7 @@ object modosDeJuego {
     method iniciar(){
         game.clear()
         game.addVisual(self)
-        game.addVisual(botonDeVolver)
+ 
 
         keyboard.num1().onPressDo({modo1v1.iniciar()})
         keyboard.num2().onPressDo({modoIANormal.iniciar()})
