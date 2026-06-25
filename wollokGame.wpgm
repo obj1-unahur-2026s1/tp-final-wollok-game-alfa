@@ -1,13 +1,7 @@
 import objetosWollokGame.*
 import menus.*
 program NuestroGame {
-	game.title("NuestroGame")
-	game.width(7)
-	game.height(9)
-	game.cellSize(200)
-
-	game.boardGround("tablero.png")
-	menuPrincipal.iniciar()
+	cuatroEnLinea.iniciar()
 	game.start()
 }
 

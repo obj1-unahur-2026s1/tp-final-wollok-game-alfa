@@ -1,5 +1,5 @@
 import wollok.game.*
-
+import menus.*
 // object unCharacter{
 //   //var property position = game.origin()
 //   //var property image = "unaImagen.png"
@@ -9,6 +9,30 @@ import wollok.game.*
 // 		position = game.origin()
 // 	}*/
 // }
+object cuatroEnLinea {
+
+   
+  //Config Audio
+  const music = game.sound("InideGame.mp3")
+
+  method iniciar(){
+
+    //Set game properties
+    game.title("CuatroEnLinea")
+    game.width(7)
+	  game.height(9)
+    game.cellSize(200)
+    
+  //Set Background Audio
+    music.shouldLoop(true)
+    music.volume(0.2)
+    music.play()
+    
+
+    //Inicializar menu y teclado
+    menuPrincipal.iniciar()
+  }
+}
 class Ficha {
   const property position
   const property color 
@@ -99,6 +123,7 @@ object tablero {
     var fila = columnas.get(columna).size() - 1 // Consigo la fila para poder verificar las victorias
     
     if(self.hayVictoria(columna,fila,jugadorActual.color())){
+      gestorDeSonidos.victoria()
       game.say(self.fichaEn(columna,fila),"Ganó " + jugadorActual.color()) // Si un jugador gana hace que la ficha diga que ganó
                                                                            // habría que agregar algo para que aparezca un cartel informandolo y salga al menú capaz
     }
@@ -110,6 +135,7 @@ object tablero {
   method hayVictoria(columna,fila,color) { // Verifica todas las posibles victorias
     return self.hayVictoriaHorizontal(columna,fila,color) || self.hayVictoriaDiagonalDerecha(columna,fila,color) || self.hayVictoriaDiagonalIzquierda(columna,fila,color) || self.hayVictoriaVertical(columna,fila,color)
   }
+  
 
   method fichaEn(columna,fila) {
     if(columna < 0 || columna >= columnas.size()) {
@@ -151,3 +177,16 @@ object tablero {
   }           // este contar solo busca hacia abajo, ya que nunca podría haber una ficha arriba de una recién puesta
 }
 
+object gestorDeSonidos {
+  const sonidoFicha = game.sound("caida.wav")
+  const sonidoVictoria = game.sound("congratulations.mp3")
+
+  method reproducirFicha(){
+    sonidoFicha.volume(0.8)
+    sonidoFicha.play()
+  }
+  method victoria(){
+    sonidoVictoria.volume(0.9)
+    sonidoVictoria.play()
+  }
+}
