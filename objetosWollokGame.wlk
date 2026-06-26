@@ -111,7 +111,7 @@ object tablero {
   //      ia.jugarEn(self)
   //  }
   //}
-
+ 
   method agregarFicha(columna) {
     if (columnas.get(columna).size() >= 6) {
       throw new Exception(message = "La columna está llena")
@@ -136,6 +136,9 @@ object tablero {
         victoria.iniciar()
       }
     }
+    else if(self.esEmpate()){
+      empate.iniciar()
+    }
     else {
       self.cambiarTurno()
     }
@@ -145,7 +148,12 @@ object tablero {
     return self.hayVictoriaHorizontal(columna,fila,color) || self.hayVictoriaDiagonalDerecha(columna,fila,color) || self.hayVictoriaDiagonalIzquierda(columna,fila,color) || self.hayVictoriaVertical(columna,fila,color)
   }
   
-
+  method esEmpate(){
+    return columnas.all { col => col.size() >= 6}
+    
+    
+  }
+  
   method fichaEn(columna,fila) {
     if(columna < 0 || columna >= columnas.size()) {
       return null // Si la columna está fuera de rango devuelve null
@@ -245,6 +253,17 @@ object victoria {
 }
 object iaGanadora {
   var property image = "pantallaIaGano.png"
+  const property position = game.origin()
+  method iniciar(){
+    game.clear()
+    game.sound("youLose.mp3").play()
+    game.addVisual(self)
+    keyboard.s().onPressDo({menuPrincipal.iniciar()})
+    keyboard.r().onPressDo({tablero.iniciar()})
+  }
+}
+object empate {
+  var property image = "empate.png"
   const property position = game.origin()
   method iniciar(){
     game.clear()
