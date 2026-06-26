@@ -97,7 +97,7 @@ object tablero {
 
   method cambiarTurno() {//AGREGADO TOMAS 25/06 22:24
     jugadorActual = self.oponente(jugadorActual)
-    //self.ejecutarTurno()
+    game.addVisual(new Turno(color = jugadorActual.color())) //KATIA 26/06
     if (self.estaJugandoLaIA()) {
         game.schedule(600,{ia.jugarEn(self)})
     }
@@ -272,4 +272,9 @@ object empate {
     keyboard.s().onPressDo({menuPrincipal.iniciar()})
     keyboard.r().onPressDo({tablero.iniciar()})
   }
+}
+class Turno {
+  const property color 
+  method image() = "turno" + color + ".png"
+  method position() = game.at(6,6)
 }
