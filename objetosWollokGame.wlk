@@ -1,15 +1,6 @@
 import wollok.game.*
 import menus.*
 import IA-Dificultades.*
-// object unCharacter{
-//   //var property position = game.origin()
-//   //var property image = "unaImagen.png"
-//   //var vidas = 3
-
-//   /*method resetPosition() {
-// 		position = game.origin()
-// 	}*/
-// }
 object cuatroEnLinea{
 
   //Config Audio
@@ -23,7 +14,7 @@ object cuatroEnLinea{
 	  game.height(9)
     game.cellSize(200)
     
-  //Set Background Audio
+    //Set Background Audio
     music.shouldLoop(true)
     music.volume(0.2)
     music.play()
@@ -46,15 +37,6 @@ class Jugador {
     casillerosOcupados.add(unCasillero)
   }
 }
-
-object flechaSelectora {
-  // Sería como una flecha que solo se debería mover horizontalmente en la parte superior, para así indicar
-  // en que posición caería la próxima ficha. Su imagen debería cambiar entre rojo y verde dependiendo
-  // del turno del jugador. ¿Creamos un objeto para cada jugador?
-  var property image = "flechaSelectora.png"
-  var property position = game.at(2,2) 
-}
-
 
 object tablero {
   var ia=null //AGREGADO TOMAS 25/06 22:24
@@ -116,16 +98,19 @@ object tablero {
   method cambiarTurno() {//AGREGADO TOMAS 25/06 22:24
     jugadorActual = self.oponente(jugadorActual)
     //self.ejecutarTurno()
-    if (ia != null && jugadorActual.color() == "Verde") {
-        ia.jugarEn(self)
+    if (self.estaJugandoLaIA()) {
+        game.schedule(600,{ia.jugarEn(self)})
     }
   }
-  
-  method ejecutarTurno() {//AGREGADO TOMAS 25/06 22:24
-    if (ia != null && jugadorActual.color() == "Verde") {
-        ia.jugarEn(self)
-    }
+  method estaJugandoLaIA(){
+    return ia != null && jugadorActual.color() == "Verde"
   }
+  //method ejecutarTurno() {
+  //AGREGADO TOMAS 25/06 22:24
+  //  if (self.estaJugandoLaIA()) {
+  //      ia.jugarEn(self)
+  //  }
+  //}
 
   method agregarFicha(columna) {
     if (columnas.get(columna).size() >= 6) {
@@ -142,9 +127,14 @@ object tablero {
     var fila = columnas.get(columna).size() - 1 // Consigo la fila para poder verificar las victorias
     
     if(self.hayVictoria(columna,fila,jugadorActual.color())){
-      game.sound("congratulations.mp3")
-      victoria.iniciar()
-
+      if (self.estaJugandoLaIA()){
+      
+        iaGanadora.iniciar()
+      }
+      else {
+        
+        victoria.iniciar()
+      }
     }
     else {
       self.cambiarTurno()
@@ -247,6 +237,18 @@ object victoria {
   const property position = game.origin()
   method iniciar(){
     game.clear()
+    game.sound("congratulations.mp3").play()
+    game.addVisual(self)
+    keyboard.s().onPressDo({menuPrincipal.iniciar()})
+    keyboard.r().onPressDo({tablero.iniciar()})
+  }
+}
+object iaGanadora {
+  var property image = "pantallaIaGano.png"
+  const property position = game.origin()
+  method iniciar(){
+    game.clear()
+    game.sound("youLose.mp3").play()
     game.addVisual(self)
     keyboard.s().onPressDo({menuPrincipal.iniciar()})
     keyboard.r().onPressDo({tablero.iniciar()})
