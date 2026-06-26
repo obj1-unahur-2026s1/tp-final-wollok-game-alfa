@@ -1,4 +1,5 @@
 import objetosWollokGame.*
+import IA-Dificultades.*
 object menuPrincipal {
     const property position = game.origin()
     method image(){
@@ -23,8 +24,9 @@ object modosDeJuego {
  
 
         keyboard.num1().onPressDo({modo1v1.iniciar()})
-        keyboard.num2().onPressDo({modoIANormal.iniciar()})
-        keyboard.num3().onPressDo({modoIAImposible.iniciar()})
+        keyboard.num2().onPressDo({modoIAestandar.iniciar()})
+        keyboard.num3().onPressDo({modoIADificil.iniciar()})
+        keyboard.num4().onPressDo({modoIAExtrema.iniciar()})
         
         keyboard.s().onPressDo({menuPrincipal.iniciar()})
         keyboard.r().onPressDo({tablero.iniciar()})
@@ -33,16 +35,31 @@ object modosDeJuego {
 object modo1v1 {
     method iniciar(){
         tablero.iniciar()
+        tablero.setterIA(null)
     }
 }
-object modoIANormal {
-    method iniciar(){
-        // Se debe inicializar el modo de la IA
+object modoIAestandar {
+    method iniciar() {//AGREGADO TOMAS 25/06 22:24
+        const ia = new IA(color="Verde", dificultad=extrema)
+        tablero.setterIA(ia)
+        tablero.iniciar()
     }
 }
-object modoIAImposible {
-    method iniciar(){
+object modoIADificil {
+    method iniciar(){//AGREGADO TOMAS 25/06 22:24
         // Se debe inicializar el modo de la IA
+        const ia new IA(color="Verde", dificultad=dificil)
+        tablero.setterIA(ia)
+        tablero.iniciar()
+    }
+}
+
+object modoIAExtrema {
+    method iniciar(){//AGREGADO TOMAS 25/06 22:24
+        // Se debe inicializar el modo de la IA
+        const ia new IA(color="Verde", dificultad=extrema)
+        tablero.setterIA(ia)
+        tablero.iniciar()
     }
 }
 object instrucciones {

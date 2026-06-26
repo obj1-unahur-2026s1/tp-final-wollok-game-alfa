@@ -1,5 +1,6 @@
 import objetosWollokGame.*
 import menus.*
+import IA-Dificultades.*
 program NuestroGame {
 	cuatroEnLinea.iniciar()
 	game.start()

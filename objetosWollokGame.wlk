@@ -1,5 +1,6 @@
 import wollok.game.*
 import menus.*
+import IA-Dificultades.*
 // object unCharacter{
 //   //var property position = game.origin()
 //   //var property image = "unaImagen.png"
@@ -56,6 +57,7 @@ object flechaSelectora {
 
 
 object tablero {
+  var ia=null //AGREGADO TOMAS 25/06 22:24
   const property image = "tablero.png"
   const property position = game.origin()
   const property columnas = [
@@ -72,6 +74,9 @@ object tablero {
   var jugadorActual = jugadores.first()
 
   
+  method setterIA(unaIA){//AGREGADO TOMAS 25/06 22:24
+    ia=unaIA
+  }
 
   method iniciar(){
     game.clear()
@@ -108,10 +113,20 @@ object tablero {
     return jugadores.find({j => j != jugador}) // Como la lista de jugadores es de 2 busca el que no sea el actual
   }
 
-  method cambiarTurno() {
+  method cambiarTurno() {//AGREGADO TOMAS 25/06 22:24
     jugadorActual = self.oponente(jugadorActual)
+    //self.ejecutarTurno()
+    if (ia != null && jugadorActual.color() == "Verde") {
+        ia.jugarEn(self)
+    }
   }
   
+  method ejecutarTurno() {//AGREGADO TOMAS 25/06 22:24
+    if (ia != null && jugadorActual.color() == "Verde") {
+        ia.jugarEn(self)
+    }
+  }
+
   method agregarFicha(columna) {
     if (columnas.get(columna).size() >= 6) {
       throw new Exception(message = "La columna está llena")
