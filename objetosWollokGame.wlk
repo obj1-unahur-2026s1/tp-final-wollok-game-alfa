@@ -64,6 +64,7 @@ object tablero {
     game.clear()
     self.limpiarColumnas()
     game.addVisual(self)
+    jugadorActual = jugadores.first()
     (1..7).forEach({n => keyboard.num(n).onPressDo{self.realizarJugada(n - 1)} })
     keyboard.s().onPressDo({modosDeJuego.iniciar()})
   }
