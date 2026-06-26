@@ -48,7 +48,7 @@ object modoIAestandar {
 object modoIADificil {
     method iniciar(){//AGREGADO TOMAS 25/06 22:24
         // Se debe inicializar el modo de la IA
-        const ia new IA(color="Verde", dificultad=dificil)
+        const ia = new IA(color="Verde", dificultad=dificil)
         tablero.setterIA(ia)
         tablero.iniciar()
     }
@@ -57,7 +57,7 @@ object modoIADificil {
 object modoIAExtrema {
     method iniciar(){//AGREGADO TOMAS 25/06 22:24
         // Se debe inicializar el modo de la IA
-        const ia new IA(color="Verde", dificultad=extrema)
+        const ia = new IA(color="Verde", dificultad=extrema)
         tablero.setterIA(ia)
         tablero.iniciar()
     }
