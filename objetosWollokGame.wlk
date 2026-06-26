@@ -54,7 +54,7 @@ object tablero {
 
   const jugadores = [new Jugador(color="Roja"),new Jugador(color="Verde")]
   var jugadorActual = jugadores.first()
-
+  var marcador = new Turno(color = jugadorActual.color())
   
   method setterIA(unaIA){//AGREGADO TOMAS 25/06 22:24
     ia=unaIA
@@ -65,6 +65,7 @@ object tablero {
     self.limpiarColumnas()
     game.addVisual(self)
     jugadorActual = jugadores.first()
+    game.addVisual(marcador)
     (1..7).forEach({n => keyboard.num(n).onPressDo{self.realizarJugada(n - 1)} })
     keyboard.s().onPressDo({modosDeJuego.iniciar()})
   }
@@ -98,7 +99,8 @@ object tablero {
 
   method cambiarTurno() {//AGREGADO TOMAS 25/06 22:24
     jugadorActual = self.oponente(jugadorActual)
-    game.addVisual(new Turno(color = jugadorActual.color())) //KATIA 26/06
+    marcador = new Turno(color = jugadorActual.color())
+    game.addVisual(marcador) //KATIA 26/06
     if (self.estaJugandoLaIA()) {
         game.schedule(600,{ia.jugarEn(self)})
     }
@@ -126,7 +128,7 @@ object tablero {
   method realizarJugada(columna){
     self.agregarFicha(columna)
     var fila = columnas.get(columna).size() - 1 // Consigo la fila para poder verificar las victorias
-    
+    game.removeVisual(marcador)
     if(self.hayVictoria(columna,fila,jugadorActual.color())){
       if (self.estaJugandoLaIA()){
       
@@ -141,6 +143,7 @@ object tablero {
       empate.iniciar()
     }
     else {
+      
       self.cambiarTurno()
     }
   }
@@ -277,5 +280,5 @@ object empate {
 class Turno {
   const property color 
   method image() = "turno" + color + ".png"
-  method position() = game.at(6,6)
+  method position() = game.at(4.5,7)
 }
