@@ -70,19 +70,19 @@ object instrucciones {
     method iniciar(){
         game.clear()
         game.addVisual(self)
-        game.addVisual(botonDeVolver)
+        //game.addVisual(botonDeVolver)
         keyboard.s().onPressDo({menuPrincipal.iniciar()})        
     }
 }
 object creditos {
     const property position = game.origin()
     method image(){
-        return // Acá debe estar la imagen de modos de creditos
+        return "creditos.png"
     }
     method iniciar(){
         game.removeVisual(menuPrincipal)
         game.addVisual(self)
-        game.addVisual(botonDeVolver)
+        //game.addVisual(botonDeVolver)
         keyboard.s().onPressDo({menuPrincipal.iniciar()})
     }
 }
