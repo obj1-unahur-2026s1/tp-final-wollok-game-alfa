@@ -286,6 +286,11 @@ object empate {
 }
 class Turno {
   const property color 
-  method image() = "turno" + color + ".png"
+  method image(){
+    if(not tablero.estaJugandoLaIA()){
+      return "turno" + color + ".png"
+    }
+    return "turnoIA.png"
+  }
   method position() = game.at(4.5,7)
 }
