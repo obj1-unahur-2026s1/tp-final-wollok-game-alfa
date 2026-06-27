@@ -18,7 +18,6 @@ object cuatroEnLinea{
     music.shouldLoop(true)
     music.volume(0.2)
     music.play()
-    
 
     //Inicializar menu y teclado
     menuPrincipal.iniciar()
@@ -70,6 +69,7 @@ object tablero {
     game.addVisual(marcador)
     (1..7).forEach({n => keyboard.num(n).onPressDo{self.realizarJugada(n - 1)} })
     keyboard.s().onPressDo({modosDeJuego.iniciar()})
+
   }
   method limpiarColumnas(){
     columnas.forEach({c=> c.clear()})
@@ -265,9 +265,11 @@ object victoria {
 object iaGanadora {
   var property image = "pantallaIaGano.png"
   const property position = game.origin()
+  const music = "youLose.mp3"
   method iniciar(){
     game.clear()
-    game.sound("youLose.mp3").play()
+    music.volume(0.3)
+    music.play()
     game.addVisual(self)
     keyboard.s().onPressDo({menuPrincipal.iniciar()})
     keyboard.r().onPressDo({tablero.iniciar()})
@@ -276,9 +278,11 @@ object iaGanadora {
 object empate {
   var property image = "empate.png"
   const property position = game.origin()
+  const music = "youLose.mp3"
   method iniciar(){
     game.clear()
-    game.sound("youLose.mp3").play()
+    music.volume(0.3)
+    music.play()
     game.addVisual(self)
     keyboard.s().onPressDo({menuPrincipal.iniciar()})
     keyboard.r().onPressDo({tablero.iniciar()})
