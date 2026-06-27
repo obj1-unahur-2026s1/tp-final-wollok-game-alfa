@@ -40,6 +40,7 @@ class Jugador {
 
 object tablero {
   var ia=null //AGREGADO TOMAS 25/06 22:24
+  var tecladoBloqueado = false
   const property image = "tablero.png"
   const property position = game.origin()
   const property columnas = [
@@ -62,6 +63,7 @@ object tablero {
 
   method iniciar(){
     game.clear()
+    tecladoBloqueado = false
     self.limpiarColumnas()
     game.addVisual(self)
     jugadorActual = jugadores.first()
@@ -101,8 +103,12 @@ object tablero {
     jugadorActual = self.oponente(jugadorActual)
     marcador = new Turno(color = jugadorActual.color())
     game.addVisual(marcador) //KATIA 26/06
-    if (self.estaJugandoLaIA()) {
-        game.schedule(600,{ia.jugarEn(self)})
+    if (self.estaJugandoLaIA()){
+      tecladoBloqueado = true
+      game.schedule(600, {
+        tecladoBloqueado = false
+        ia.jugarEn(self)
+      })
     }
   }
   method estaJugandoLaIA(){
@@ -125,17 +131,17 @@ object tablero {
     game.addVisual(ficha)
   }
   
-  method realizarJugada(columna){
+method realizarJugada(columna) {
+  if (not tecladoBloqueado) {
     self.agregarFicha(columna)
-    var fila = columnas.get(columna).size() - 1 // Consigo la fila para poder verificar las victorias
+    var fila = columnas.get(columna).size() - 1 
     game.removeVisual(marcador)
+    
     if(self.hayVictoria(columna,fila,jugadorActual.color())){
       if (self.estaJugandoLaIA()){
-      
         iaGanadora.iniciar()
       }
       else {
-        
         victoria.iniciar()
       }
     }
@@ -143,10 +149,11 @@ object tablero {
       empate.iniciar()
     }
     else {
-      
       self.cambiarTurno()
     }
   }
+}
+
 
   method hayVictoria(columna,fila,color) { // Verifica todas las posibles victorias
     return self.hayVictoriaHorizontal(columna,fila,color) || self.hayVictoriaDiagonalDerecha(columna,fila,color) || self.hayVictoriaDiagonalIzquierda(columna,fila,color) || self.hayVictoriaVertical(columna,fila,color)
