@@ -265,7 +265,7 @@ object victoria {
 object iaGanadora {
   var property image = "pantallaIaGano.png"
   const property position = game.origin()
-  const music = "youLose.mp3"
+  const music = game.sound("youLose.mp3")
   method iniciar(){
     game.clear()
     music.volume(0.3)
@@ -278,9 +278,9 @@ object iaGanadora {
 object empate {
   var property image = "empate.png"
   const property position = game.origin()
-  const music = "youLose.mp3"
+  const music = game.sound("youLose.mp3")
   method iniciar(){
-    game.clear()
+    game.clear()    
     music.volume(0.3)
     music.play()
     game.addVisual(self)
