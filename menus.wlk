@@ -70,7 +70,6 @@ object instrucciones {
     method iniciar(){
         game.clear()
         game.addVisual(self)
-        //game.addVisual(botonDeVolver)
         keyboard.s().onPressDo({menuPrincipal.iniciar()})        
     }
 }
@@ -82,16 +81,6 @@ object creditos {
     method iniciar(){
         game.removeVisual(menuPrincipal)
         game.addVisual(self)
-        //game.addVisual(botonDeVolver)
         keyboard.s().onPressDo({menuPrincipal.iniciar()})
-    }
-}
-object botonDeVolver {
-    const property position = game.at(6,2)  // Se puede modificar la posición
-    method image(){
-        return "botonVolver.png"
-    }
-    method iniciar(){
-        game.clear()
     }
 }
