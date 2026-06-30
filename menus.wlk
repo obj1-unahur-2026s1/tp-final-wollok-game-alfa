@@ -12,6 +12,8 @@ object menuPrincipal {
 	    keyboard.num2().onPressDo({instrucciones.iniciar()})
 	    keyboard.num3().onPressDo({creditos.iniciar()})
         keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
+        keyboard.up().onPressDo({controlDeVolumen.aumentarVolumen()})
+        keyboard.down().onPressDo({controlDeVolumen.bajarVolumen()})
     }
 }
 object modosDeJuego {
@@ -30,6 +32,8 @@ object modosDeJuego {
         keyboard.num4().onPressDo({modoIAExtrema.iniciar()})
 
         keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
+        keyboard.up().onPressDo({controlDeVolumen.aumentarVolumen()})
+        keyboard.down().onPressDo({controlDeVolumen.bajarVolumen()})
         keyboard.s().onPressDo({menuPrincipal.iniciar()})
         keyboard.r().onPressDo({tablero.iniciar()})
     }
@@ -73,7 +77,9 @@ object instrucciones {
         game.clear()
         game.addVisual(self)
         keyboard.s().onPressDo({menuPrincipal.iniciar()})
-        keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})        
+        keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
+        keyboard.up().onPressDo({controlDeVolumen.aumentarVolumen()})
+        keyboard.down().onPressDo({controlDeVolumen.bajarVolumen()})        
     }
 }
 object creditos {
@@ -86,18 +92,36 @@ object creditos {
         game.addVisual(self)
         keyboard.s().onPressDo({menuPrincipal.iniciar()})
         keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
+        keyboard.up().onPressDo({controlDeVolumen.aumentarVolumen()})
+        keyboard.down().onPressDo({controlDeVolumen.bajarVolumen()})
     }
 }
 object controlDeVolumen {
     var estaMuteado = false
-    const sonido = cuatroEnLinea.music()
+    const musicaPrincipal = cuatroEnLinea.music()
+    var volumen = 0.2
+    method volumen(){
+        return volumen
+    }
     method intercambiarMuteado(){
         estaMuteado = not estaMuteado
         if(estaMuteado){
-            sonido.volume(0)
+            musicaPrincipal.volume(0)
         }
         else{
-            sonido.volume(0.2)
+            musicaPrincipal.volume(volumen)
+        }
+    } 
+    method aumentarVolumen(){
+        if (not estaMuteado){
+            volumen = (volumen + 0.1).min(1)
+            musicaPrincipal.volume(volumen)
+        }
+    }
+    method bajarVolumen(){
+        if (not estaMuteado){
+            volumen = (volumen - 0.1).max(0.1)
+            musicaPrincipal.volume(volumen)
         }
     }
 }

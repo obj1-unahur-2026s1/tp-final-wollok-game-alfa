@@ -19,7 +19,7 @@ object cuatroEnLinea{
     
     //Set Background Audio
     music.shouldLoop(true)
-    music.volume(0.2)
+    music.volume(controlDeVolumen.volumen())
     music.play()
 
     //Inicializar menu y teclado
