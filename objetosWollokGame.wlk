@@ -262,6 +262,28 @@ object victoria {
     keyboard.r().onPressDo({tablero.iniciar()})
   }
 }
+/*object victoriaRojo {
+  var property image = "pantallaGanasteRojo.png"
+  const property position = game.origin()
+  method iniciar(){
+    game.clear()
+    game.sound("congratulations.mp3").play()
+    game.addVisual(self)
+    keyboard.s().onPressDo({menuPrincipal.iniciar()})
+    keyboard.r().onPressDo({tablero.iniciar()})
+  }
+}*/
+/*object victoriaVerde {
+  var property image = "pantallaGanasteVerde.png"
+  const property position = game.origin()
+  method iniciar(){
+    game.clear()
+    game.sound("congratulations.mp3").play()
+    game.addVisual(self)
+    keyboard.s().onPressDo({menuPrincipal.iniciar()})
+    keyboard.r().onPressDo({tablero.iniciar()})
+  }
+}*/
 object iaGanadora {
   var property image = "pantallaIaGano.png"
   const property position = game.origin()
