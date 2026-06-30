@@ -73,6 +73,8 @@ object tablero {
     (1..7).forEach({n => keyboard.num(n).onPressDo{self.realizarJugada(n - 1)} })
     keyboard.s().onPressDo({modosDeJuego.iniciar()})
     keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
+    keyboard.up().onPressDo({controlDeVolumen.aumentarVolumen()})
+    keyboard.down().onPressDo({controlDeVolumen.bajarVolumen()})
 
   }
   method limpiarColumnas(){
