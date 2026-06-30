@@ -11,6 +11,7 @@ object menuPrincipal {
         keyboard.num1().onPressDo({modosDeJuego.iniciar()})
 	    keyboard.num2().onPressDo({instrucciones.iniciar()})
 	    keyboard.num3().onPressDo({creditos.iniciar()})
+        keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
     }
 }
 object modosDeJuego {
@@ -27,7 +28,8 @@ object modosDeJuego {
         keyboard.num2().onPressDo({modoIAestandar.iniciar()})
         keyboard.num3().onPressDo({modoIADificil.iniciar()})
         keyboard.num4().onPressDo({modoIAExtrema.iniciar()})
-        
+
+        keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
         keyboard.s().onPressDo({menuPrincipal.iniciar()})
         keyboard.r().onPressDo({tablero.iniciar()})
     }
@@ -70,7 +72,8 @@ object instrucciones {
     method iniciar(){
         game.clear()
         game.addVisual(self)
-        keyboard.s().onPressDo({menuPrincipal.iniciar()})        
+        keyboard.s().onPressDo({menuPrincipal.iniciar()})
+        keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})        
     }
 }
 object creditos {
@@ -79,8 +82,22 @@ object creditos {
         return "creditos.png"
     }
     method iniciar(){
-        game.removeVisual(menuPrincipal)
+        game.clear()
         game.addVisual(self)
         keyboard.s().onPressDo({menuPrincipal.iniciar()})
+        keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
+    }
+}
+object controlDeVolumen {
+    var estaMuteado = false
+    const sonido = cuatroEnLinea.music()
+    method intercambiarMuteado(){
+        estaMuteado = not estaMuteado
+        if(estaMuteado){
+            sonido.volume(0)
+        }
+        else{
+            sonido.volume(0.2)
+        }
     }
 }

@@ -5,6 +5,9 @@ object cuatroEnLinea{
 
   //Config Audio
   const music = game.sound("InideGame.mp3")
+  method music(){
+    return music
+  }
 
   method iniciar(){
 
@@ -69,6 +72,7 @@ object tablero {
     game.addVisual(marcador)
     (1..7).forEach({n => keyboard.num(n).onPressDo{self.realizarJugada(n - 1)} })
     keyboard.s().onPressDo({modosDeJuego.iniciar()})
+    keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
 
   }
   method limpiarColumnas(){
