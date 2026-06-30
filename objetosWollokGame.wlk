@@ -125,8 +125,8 @@ object tablero {
     if (columnas.get(columna).size() >= 6) {
       throw new Exception(message = "La columna está llena")
     }
-    var fila = columnas.get(columna).size() // Consigo la fila para el position de la ficha
-    var ficha = new Ficha(color = jugadorActual.color(),position=game.at(columna,fila))
+    const fila = columnas.get(columna).size() // Consigo la fila para el position de la ficha
+    const ficha = new Ficha(color = jugadorActual.color(),position=game.at(columna,fila))
     columnas.get(columna).add(ficha) // Agrego la ficha y el visual
     game.addVisual(ficha)
   }
@@ -134,7 +134,7 @@ object tablero {
 method realizarJugada(columna) {
   if (not tecladoBloqueado) {
     self.agregarFicha(columna)
-    var fila = columnas.get(columna).size() - 1 
+    const fila = columnas.get(columna).size() - 1 
     game.removeVisual(marcador)
     
     if(self.hayVictoria(columna,fila,jugadorActual.color())){
@@ -173,7 +173,7 @@ method realizarJugada(columna) {
       return null // Si la columna está fuera de rango devuelve null
     }             // Pongo null para que si no es válido corte la recursividad en el método contar
     
-    var col = columnas.get(columna)
+    const col = columnas.get(columna)
     
     if (fila < 0 || fila >= col.size()) {
       return null // idem que en columna
@@ -182,7 +182,7 @@ method realizarJugada(columna) {
   }
 
   method contar(columna,fila,dx,dy,color) {  // Paso por parametro la columna, fila y color. Además dx y dy son números para poder ir buscando en
-    var ficha = self.fichaEn(columna,fila)   // las casillas lindantes
+    const ficha = self.fichaEn(columna,fila)   // las casillas lindantes
 
     if (ficha == null || ficha.color() != color) { // Si en el método fichaEn retorno null retorna 0, cortando la recursividad
       return 0                                     // Lo mismo si encuentra una ficha de otro color
@@ -278,11 +278,9 @@ object victoriaVerde {
 object iaGanadora {
   var property image = "pantallaIaGano.png"
   const property position = game.origin()
-  const music = game.sound("youLose.mp3")
   method iniciar(){
     game.clear()
-    music.volume(0.3)
-    music.play()
+    game.sound("youLose.mp3").play()
     game.addVisual(self)
     keyboard.s().onPressDo({menuPrincipal.iniciar()})
     keyboard.r().onPressDo({tablero.iniciar()})
@@ -294,7 +292,6 @@ object empate {
   const music = game.sound("youLose.mp3")
   method iniciar(){
     game.clear()    
-    music.volume(0.3)
     music.play()
     game.addVisual(self)
     keyboard.s().onPressDo({menuPrincipal.iniciar()})
