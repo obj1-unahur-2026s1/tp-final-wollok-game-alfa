@@ -134,6 +134,7 @@ object tablero {
 method realizarJugada(columna) {
   if (not tecladoBloqueado) {
     self.agregarFicha(columna)
+    game.sound("caida.mp3").play()
     const fila = columnas.get(columna).size() - 1 
     game.removeVisual(marcador)
     
