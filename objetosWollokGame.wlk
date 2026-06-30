@@ -141,8 +141,11 @@ method realizarJugada(columna) {
       if (self.estaJugandoLaIA()){
         iaGanadora.iniciar()
       }
+      else if (jugadorActual.color() == "Roja"){
+        victoriaRojo.iniciar()
+      }
       else {
-        victoria.iniciar()
+        victoriaVerde.iniciar()
       }
     }
     else if(self.esEmpate()){
@@ -250,19 +253,7 @@ method realizarJugada(columna) {
   
 }
 
-
-object victoria {
-  var property image = "pantallaGanaste.png"
-  const property position = game.origin()
-  method iniciar(){
-    game.clear()
-    game.sound("congratulations.mp3").play()
-    game.addVisual(self)
-    keyboard.s().onPressDo({menuPrincipal.iniciar()})
-    keyboard.r().onPressDo({tablero.iniciar()})
-  }
-}
-/*object victoriaRojo {
+object victoriaRojo {
   var property image = "pantallaGanasteRojo.png"
   const property position = game.origin()
   method iniciar(){
@@ -272,8 +263,8 @@ object victoria {
     keyboard.s().onPressDo({menuPrincipal.iniciar()})
     keyboard.r().onPressDo({tablero.iniciar()})
   }
-}*/
-/*object victoriaVerde {
+}
+object victoriaVerde {
   var property image = "pantallaGanasteVerde.png"
   const property position = game.origin()
   method iniciar(){
@@ -283,7 +274,7 @@ object victoria {
     keyboard.s().onPressDo({menuPrincipal.iniciar()})
     keyboard.r().onPressDo({tablero.iniciar()})
   }
-}*/
+}
 object iaGanadora {
   var property image = "pantallaIaGano.png"
   const property position = game.origin()
