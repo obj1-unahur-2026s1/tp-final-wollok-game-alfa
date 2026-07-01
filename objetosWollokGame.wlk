@@ -149,10 +149,12 @@ method realizarJugada(columna) {
         iaGanadora.iniciar()
       }
       else if (jugadorActual.color() == "Roja"){
-        victoriaRojo.iniciar()
+        victoria.image("pantallaGanasteRojo.png")
+        victoria.iniciar()
       }
       else {
-        victoriaVerde.iniciar()
+        victoria.image("pantallaGanasteVerde.png")
+        victoria.iniciar()
       }
     }
     else if(self.esEmpate()){
@@ -260,19 +262,8 @@ method realizarJugada(columna) {
   
 }
 
-object victoriaRojo {
+object victoria {
   var property image = "pantallaGanasteRojo.png"
-  const property position = game.origin()
-  method iniciar(){
-    game.clear()
-    game.sound("congratulations.mp3").play()
-    game.addVisual(self)
-    keyboard.s().onPressDo({menuPrincipal.iniciar()})
-    keyboard.r().onPressDo({tablero.iniciar()})
-  }
-}
-object victoriaVerde {
-  var property image = "pantallaGanasteVerde.png"
   const property position = game.origin()
   method iniciar(){
     game.clear()
