@@ -10,19 +10,19 @@
 
 ## Capturas del juego en funcionamiento
 #### Imagen de la pantalla de inicio del juego
-![Imagen de pantalla de Inicio](assets\CapturaInicio.png) 
+![Imagen de pantalla de Inicio](assets/CapturaInicio.png) 
 
 #### Imagen de los modos del juego
-![Imagen de los modos de juego](assets\CapturaModosDeJuego.png)
+![Imagen de los modos de juego](assets/CapturaModosDeJuego.png)
 
 #### Imagen del modo de juego 1v1
-![Imagen del modo de juego 1v1](assets\Captura1v1.png)
+![Imagen del modo de juego 1v1](assets/Captura1v1.png)
 
 #### Imagen del modo de juego contra la IA
-![Imagen del modo de juego contra la ia](assets\CapturaContraIA.png)
+![Imagen del modo de juego contra la ia](assets/CapturaContraIA.png)
 
 #### Imagen de un ejemplo de fin de juego
-![Imagen ejemplo fin de juego](assets\CapturaFinDeJuego.png)
+![Imagen ejemplo fin de juego](assets/CapturaFinDeJuego.png)
 
 ## Reglas de Juego / Instrucciones
 # 🎮 Cómo jugar
@@ -56,6 +56,9 @@ El juego cuenta con cuatro modos:
 | **1 - 7** | Elegir la columna donde caerá la ficha |
 | **R** | Reiniciar la partida |
 | **S** | Volver al menú principal |
+| **M** | Mute |
+| **↓** | Bajar volumen |
+| **↑** | Subir volumen |
 
 ## 📖 Mecánica del juego
 
