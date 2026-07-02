@@ -10,19 +10,19 @@
 
 ## Capturas del juego en funcionamiento
 #### Imagen de la pantalla de inicio del juego
-<img  src= "assets\CapturaInicio.png" width ="300px"/>
+![Imagen de pantalla de Inicio](assets\CapturaInicio.png) 
 
 #### Imagen de los modos del juego
-<img  src="assets\CapturaModosDeJuego.png" width ="300px"/>
+![Imagen de los modos de juego](assets\CapturaModosDeJuego.png)
 
 #### Imagen del modo de juego 1v1
-<img  src="assets\CapturaTablero1v1.png" width ="300px"/>
+![Imagen del modo de juego 1v1](assets\Captura1v1.png)
 
 #### Imagen del modo de juego contra la IA
-<img  src="assets\CapturaJuegoContraIA.png" width ="300px"/>
+![Imagen del modo de juego contra la ia](assets\CapturaContraIA.png)
 
 #### Imagen de un ejemplo de fin de juego
-<img  src="assets\CapturaFinDeJuego.png" width ="300px"/>
+![Imagen ejemplo fin de juego](assets\CapturaFinDeJuego.png)
 
 ## Reglas de Juego / Instrucciones
 # 🎮 Cómo jugar
