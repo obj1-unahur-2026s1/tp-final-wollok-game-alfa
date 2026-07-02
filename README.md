@@ -8,9 +8,21 @@
 - Katia Soler
 - Narancio D. Lucas
 
-## Capturas
+## Capturas del juego en funcionamiento
+#### Imagen de la pantalla de inicio del juego
+<img  src= "assets\CapturaInicio.png" width ="300px"/>
 
-(agregar)
+#### Imagen de los modos del juego
+<img  src="assets\CapturaModosDeJuego.png" width ="300px"/>
+
+#### Imagen del modo de juego 1v1
+<img  src="assets\CapturaTablero1v1.png" width ="300px"/>
+
+#### Imagen del modo de juego contra la IA
+<img  src="assets\CapturaJuegoContraIA.png" width ="300px"/>
+
+#### Imagen de un ejemplo de fin de juego
+<img  src="assets\CapturaFinDeJuego.png" width ="300px"/>
 
 ## Reglas de Juego / Instrucciones
 # 🎮 Cómo jugar
