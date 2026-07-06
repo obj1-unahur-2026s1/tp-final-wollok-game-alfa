@@ -41,6 +41,7 @@ class Jugador {
 }
 
 object tablero {
+  var ultimaColumnaJugada=null
   var ia=null //AGREGADO TOMAS 25/06 22:24
   var tecladoBloqueado = false
   const property image = "tablero.png"
@@ -61,6 +62,10 @@ object tablero {
   
   method setterIA(unaIA){//AGREGADO TOMAS 25/06 22:24
     ia=unaIA
+  }
+
+  method ultimaColumnaJugada(){
+    return ultimaColumnaJugada
   }
 
   method iniciar(){
@@ -137,34 +142,39 @@ object tablero {
     game.addVisual(ficha)
   }
   
-method realizarJugada(columna) {
-  if (not tecladoBloqueado) {
-    self.agregarFicha(columna)
-    game.sound("caida.mp3").play()
-    const fila = columnas.get(columna).size() - 1 
-    game.removeVisual(marcador)
-    
-    if(self.hayVictoria(columna,fila,jugadorActual.color())){
-      if (self.estaJugandoLaIA()){
-        iaGanadora.iniciar()
+  method realizarJugada(columna) {
+    if (not tecladoBloqueado) {
+      
+      if(not self.estaJugandoLaIA()) {
+        ultimaColumnaJugada = columna //para la dificultad extrema, lo guarda para que la IA rompa las bolas
       }
-      else if (jugadorActual.color() == "Roja"){
-        victoria.image("pantallaGanasteRojo.png")
-        victoria.iniciar()
+
+      self.agregarFicha(columna)
+      game.sound("caida.mp3").play()
+      const fila = columnas.get(columna).size() - 1 
+      game.removeVisual(marcador)
+    
+      if(self.hayVictoria(columna,fila,jugadorActual.color())){
+        if (self.estaJugandoLaIA()){
+          iaGanadora.iniciar()
+        }
+        else if (jugadorActual.color() == "Roja"){
+          victoria.image("pantallaGanasteRojo.png")
+          victoria.iniciar()
+        }
+        else {
+          victoria.image("pantallaGanasteVerde.png")
+          victoria.iniciar()
+        }
+      }
+      else if(self.esEmpate()){
+        empate.iniciar()
       }
       else {
-        victoria.image("pantallaGanasteVerde.png")
-        victoria.iniciar()
+        self.cambiarTurno()
       }
     }
-    else if(self.esEmpate()){
-      empate.iniciar()
-    }
-    else {
-      self.cambiarTurno()
-    }
   }
-}
 
 
   method hayVictoria(columna,fila,color) { // Verifica todas las posibles victorias
