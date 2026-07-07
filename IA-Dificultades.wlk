@@ -1,11 +1,6 @@
 import objetosWollokGame.*
 class IA inherits Jugador{
-    const property probocaciones = []
     const dificultad
-    
-    //method insultar() {
-    //    return probocaciones.anyOne()
-    //}
 
     method jugarEn(unTablero) {
         dificultad.jugar(self, unTablero)

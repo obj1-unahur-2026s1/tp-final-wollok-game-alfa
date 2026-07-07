@@ -42,7 +42,7 @@ class Jugador {
 
 object tablero {
   var ultimaColumnaJugada=null
-  var ia=null //AGREGADO TOMAS 25/06 22:24
+  var ia=null
   var tecladoBloqueado = false
   const property image = "tablero.png"
   const property position = game.origin()
@@ -60,7 +60,7 @@ object tablero {
   var jugadorActual = jugadores.first()
   var marcador = new Turno(color = jugadorActual.color())
   
-  method setterIA(unaIA){//AGREGADO TOMAS 25/06 22:24
+  method setterIA(unaIA){
     ia=unaIA
   }
 
@@ -89,9 +89,6 @@ object tablero {
     game.addVisual(
       new Ficha(position = columnas.get(columna), color = color))
   }
-  method mensaje(resultado, columna){
-    game.say(self.fichaEn(columna), resultado.mensaje())
-  }
   method fichaEn(columna){
     return game.getObjectsIn(columnas.get(columna).last())
   }
@@ -110,10 +107,10 @@ object tablero {
     return jugadores.find({j => j != jugador}) // Como la lista de jugadores es de 2 busca el que no sea el actual
   }
 
-  method cambiarTurno() {//AGREGADO TOMAS 25/06 22:24
+  method cambiarTurno() {
     jugadorActual = self.oponente(jugadorActual)
     marcador = new Turno(color = jugadorActual.color())
-    game.addVisual(marcador) //KATIA 26/06
+    game.addVisual(marcador) 
     if (self.estaJugandoLaIA()){
       tecladoBloqueado = true
       game.schedule(600, {
@@ -125,12 +122,6 @@ object tablero {
   method estaJugandoLaIA(){
     return ia != null && jugadorActual.color() == "Verde"
   }
-  //method ejecutarTurno() {
-  //AGREGADO TOMAS 25/06 22:24
-  //  if (self.estaJugandoLaIA()) {
-  //      ia.jugarEn(self)
-  //  }
-  //}
  
   method agregarFicha(columna) {
     if (columnas.get(columna).size() >= 6) {
@@ -158,13 +149,8 @@ object tablero {
         if (self.estaJugandoLaIA()){
           iaGanadora.iniciar()
         }
-        else if (jugadorActual.color() == "Roja"){
-          victoria.image("pantallaGanasteRojo.png")
-          victoria.iniciar()
-        }
         else {
-          victoria.image("pantallaGanasteVerde.png")
-          victoria.iniciar()
+          new victoria(color = jugadorActual.color()).iniciar()
         }
       }
       else if(self.esEmpate()){
@@ -226,7 +212,6 @@ object tablero {
     return 1 + self.contar(columna,fila - 1,0,-1,color) >= 4
   }           // este contar solo busca hacia abajo, ya que nunca podría haber una ficha arriba de una recién puesta
   
-  //agregado por tomas 25/06/ (LO DEJO ACLARADO POR SI FALLA YA SABEMOS DONDE BUSCAR)
   method esJugadaGanadora(columna, unJugador) {
     //este metodo utiliza una ficha fantasma para detectar que pasa si una ficha real se coloca en la posicion, con esto asi se pueden reutilizar los metodos que detectan victorias
     var band=true
@@ -268,13 +253,14 @@ object tablero {
     const col = columnas.get(columna)
     col.remove(col.last())
   }
-  //agregado por tomas 25/06/ (LO DEJO ACLARADO POR SI FALLA YA SABEMOS DONDE BUSCAR)
+  
   
 }
 
-object victoria {
-  var property image = "pantallaGanasteRojo.png"
+class victoria {
+  const property color
   const property position = game.origin()
+  method image() = "pantallaGanaste" + color + ".png"
   method iniciar(){
     game.clear()
     game.sound("congratulations.mp3").play()

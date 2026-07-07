@@ -45,15 +45,14 @@ object modo1v1 {
     }
 }
 object modoIAestandar {
-    method iniciar() {//AGREGADO TOMAS 25/06 22:24
+    method iniciar() {
         const ia = new IA(color="Verde", dificultad=extrema)
         tablero.setterIA(ia)
         tablero.iniciar()
     }
 }
 object modoIADificil {
-    method iniciar(){//AGREGADO TOMAS 25/06 22:24
-        // Se debe inicializar el modo de la IA
+    method iniciar(){
         const ia = new IA(color="Verde", dificultad=dificil)
         tablero.setterIA(ia)
         tablero.iniciar()
@@ -61,8 +60,7 @@ object modoIADificil {
 }
 
 object modoIAExtrema {
-    method iniciar(){//AGREGADO TOMAS 25/06 22:24
-        // Se debe inicializar el modo de la IA
+    method iniciar(){
         const ia = new IA(color="Verde", dificultad=extrema)
         tablero.setterIA(ia)
         tablero.iniciar()
