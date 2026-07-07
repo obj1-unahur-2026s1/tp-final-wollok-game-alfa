@@ -42,12 +42,12 @@ object dificil {
         const enemigo = tablero.oponente(ia)
 
         var i = 0
-        var jugada = 00
+        var jugada = null
 
         // 1. primero busca neutralizar enemigo
         tablero.columnas().forEach { col =>
 
-            if(jugada == 00 && tablero.esJugadaGanadora(i, enemigo)) {
+            if(jugada == null && tablero.esJugadaGanadora(i, enemigo)) {
                 jugada = i
             }
 
@@ -55,13 +55,13 @@ object dificil {
         }
 
         // 2. segunda prioridad es buscar la ganadora propia sino encuentra juega una columna aleatoria
-        if(jugada == 00) {
+        if(jugada == null) {
 
             i = 0
 
             tablero.columnas().forEach { col =>
 
-                if(jugada == 00 && tablero.esJugadaGanadora(i, ia)) {
+                if(jugada == null && tablero.esJugadaGanadora(i, ia)) {
                     jugada = i
                 }
 
@@ -69,7 +69,7 @@ object dificil {
             }
         }
 
-        if(jugada != 00) {
+        if(jugada != null) {
             tablero.realizarJugada(jugada)
         } else {
             tablero.realizarJugada(tablero.columnaAleatoria())
@@ -85,12 +85,12 @@ object extrema {
         const enemigo = tablero.oponente(ia)
 
         var i = 0
-        var jugada = 00
+        var jugada = null
 
         // lo primero que prioriza es ganar
         tablero.columnas().forEach { col =>
 
-            if(jugada == 00 && tablero.esJugadaGanadora(i, ia)) {
+            if(jugada == null && tablero.esJugadaGanadora(i, ia)) {
                 jugada = i
             }
 
@@ -98,13 +98,13 @@ object extrema {
         }
 
         // su segunda prioridad es bloquear al jugador
-        if(jugada == 00) {
+        if(jugada == null) {
 
             i = 0
 
             tablero.columnas().forEach { col =>
 
-                if(jugada == 00 && tablero.esJugadaGanadora(i, enemigo)) {
+                if(jugada == null && tablero.esJugadaGanadora(i, enemigo)) {
                     jugada = i
                 }
 
@@ -112,31 +112,40 @@ object extrema {
             }
         }
         
-        //Romper las bolas
-        if(jugada == 00) {
+        //Evaluar si puede molestar al jugador
+        if(jugada == null) {
 
             const ultima = tablero.ultimaColumnaJugada()//ultima jugada de persona
 
-            if(ultima != 00) {
-                
+            if(ultima != null) {
+                //evalua si la columna jugada fue la primera
+                if(jugada == null && ultima == 0 && not tablero.columnaLlena(ultima)) {
+                    jugada = ultima
+                }
+                //evalua si la columna jugada fue la ultima
+                if(jugada == null && ultima == 6 && not tablero.columnaLlena(ultima)) {
+                    jugada = ultima
+                }
                 //evalua si puede jugar del lado izquierdo de la ultima jugada
                 if(ultima > 0 && not tablero.columnaLlena(ultima - 1)) {
                     jugada = ultima - 1
                 }
                 //evalua si puede jugar del lado derecho de la ultima jugada
-                if(jugada == 00 && ultima < 6 && not tablero.columnaLlena(ultima + 1)) {
+                if(jugada == null && ultima < 6 && not tablero.columnaLlena(ultima + 1)) {
                     jugada = ultima + 1
                 }
-            }
+                
+                
+            }   
         }
 
         // esto es algo que se me ocurrio para la mayor dificultad, podriamos decir que el centro es lo preferido en este tipo de juegos, entonces cree una lista con los mas centricos en el medio para que utilice
-        if(jugada == 00) {
+        if(jugada == null) {
 
             const orden = [3,2,4,1,5,0,6]
 
             orden.forEach { c =>
-                if(jugada == 00 &&
+                if(jugada == null &&
                     not tablero.columnaLlena(c)) {
                     jugada = c
                 }
@@ -144,9 +153,9 @@ object extrema {
 
             // Si no encontró ninguna columna útil,
             // juega la mejor disponible.
-            if(jugada == 00) {
+            if(jugada == null) {
                 orden.forEach { c =>
-                if(jugada == 00 && not tablero.columnaLlena(c)) {
+                if(jugada == null && not tablero.columnaLlena(c)) {
                     jugada = c
                     }
                 }
