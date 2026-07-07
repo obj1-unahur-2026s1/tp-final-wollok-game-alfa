@@ -69,6 +69,7 @@ object tablero {
   }
 
   method iniciar(){
+    marcador = new Turno(color = "Roja")
     game.clear()
     tecladoBloqueado = false
     self.limpiarColumnas()
@@ -150,7 +151,7 @@ object tablero {
           iaGanadora.iniciar()
         }
         else {
-          new victoria(color = jugadorActual.color()).iniciar()
+          new Victoria(color = jugadorActual.color()).iniciar()
         }
       }
       else if(self.esEmpate()){
@@ -257,7 +258,7 @@ object tablero {
   
 }
 
-class victoria {
+class Victoria {
   const property color
   const property position = game.origin()
   method image() = "pantallaGanaste" + color + ".png"
@@ -289,7 +290,7 @@ object empate {
     music.play()
     game.addVisual(self)
     keyboard.s().onPressDo({menuPrincipal.iniciar()})
-    keyboard.r().onPressDo({tablero.iniciar()})
+    keyboard.r().onPressDo({tablero.iniciar(); tablero.cambiarTurno()})
   }
 }
 class Turno {
