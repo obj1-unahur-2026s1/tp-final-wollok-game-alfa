@@ -39,7 +39,16 @@ class Jugador {
     casillerosOcupados.add(unCasillero)
   }
 }
-
+class Turno {
+  const property color 
+  method image(){
+    if(not tablero.estaJugandoLaIA()){
+      return "turno" + color + ".png"
+    }
+    return "turnoIA.png"
+  }
+  method position() = game.at(4.5,7)
+}
 object tablero {
   var ultimaColumnaJugada=null
   var ia=null
@@ -81,7 +90,6 @@ object tablero {
     keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
     keyboard.up().onPressDo({controlDeVolumen.aumentarVolumen()})
     keyboard.down().onPressDo({controlDeVolumen.bajarVolumen()})
-
   }
   method limpiarColumnas(){
     columnas.forEach({c=> c.clear()})
@@ -136,11 +144,9 @@ object tablero {
   
   method realizarJugada(columna) {
     if (not tecladoBloqueado) {
-      
       if(not self.estaJugandoLaIA()) {
         ultimaColumnaJugada = columna //para la dificultad extrema, lo guarda para que la IA rompa las bolas
       }
-
       self.agregarFicha(columna)
       game.sound("caida.mp3").play()
       const fila = columnas.get(columna).size() - 1 
@@ -163,15 +169,12 @@ object tablero {
     }
   }
 
-
   method hayVictoria(columna,fila,color) { // Verifica todas las posibles victorias
     return self.hayVictoriaHorizontal(columna,fila,color) || self.hayVictoriaDiagonalDerecha(columna,fila,color) || self.hayVictoriaDiagonalIzquierda(columna,fila,color) || self.hayVictoriaVertical(columna,fila,color)
   }
   
   method esEmpate(){
     return columnas.all { col => col.size() >= 6}
-    
-    
   }
   
   method fichaEn(columna,fila) {
@@ -228,17 +231,14 @@ object tablero {
   }
 
   method columnaAleatoria() {
-
     const disponibles = []
     var i = 0
-
     columnas.forEach { col =>
         if(col.size() < 6) {
             disponibles.add(i)
         }
         i = i + 1
     }
-
     return disponibles.anyOne()
   }
 
@@ -246,60 +246,24 @@ object tablero {
     return columnas.get(columna).size() >= 6
   }
 
-  method agregarFichaTemporal(columna, color) {//Lo uso para detectar en jugada ganadora
+  method agregarFichaTemporal(columna, color) { //Lo uso para detectar en jugada ganadora
     columnas.get(columna).add(new Ficha(color = color, position = game.at(columna, columnas.get(columna).size())))
   }
 
-  method sacarFichaTemporal(columna) {//Lo uso para detectar en jugada ganadora
+  method sacarFichaTemporal(columna) { //Lo uso para detectar en jugada ganadora
     const col = columnas.get(columna)
     col.remove(col.last())
   }
-  
-  
 }
-
-class Victoria {
-  const property color
-  const property position = game.origin()
-  method image() = "pantallaGanaste" + color + ".png"
-  method iniciar(){
-    game.clear()
-    game.sound("congratulations.mp3").play()
-    game.addVisual(self)
-    keyboard.s().onPressDo({menuPrincipal.iniciar()})
-    keyboard.r().onPressDo({tablero.iniciar()})
-  }
-}
-object iaGanadora {
-  var property image = "pantallaIaGano.png"
-  const property position = game.origin()
-  method iniciar(){
-    game.clear()
-    game.sound("youLose.mp3").play()
-    game.addVisual(self)
-    keyboard.s().onPressDo({menuPrincipal.iniciar()})
-    keyboard.r().onPressDo({tablero.iniciar()})
-  }
-}
-object empate {
-  var property image = "empate.png"
-  const property position = game.origin()
-  const music = game.sound("youLose.mp3")
-  method iniciar(){
-    game.clear()    
-    music.play()
-    game.addVisual(self)
-    keyboard.s().onPressDo({menuPrincipal.iniciar()})
-    keyboard.r().onPressDo({tablero.iniciar(); tablero.cambiarTurno()})
-  }
-}
-class Turno {
-  const property color 
-  method image(){
-    if(not tablero.estaJugandoLaIA()){
-      return "turno" + color + ".png"
-    }
-    return "turnoIA.png"
-  }
-  method position() = game.at(4.5,7)
-}
+// object empate {
+//   var property image = "empate.png"
+//   const property position = game.origin()
+//   const music = game.sound("youLose.mp3")
+//   method iniciar(){
+//     game.clear()    
+//     music.play()
+//     game.addVisual(self)
+//     keyboard.s().onPressDo({menuPrincipal.iniciar()})
+//     keyboard.r().onPressDo({tablero.iniciar(); tablero.cambiarTurno()})
+//   }
+// }

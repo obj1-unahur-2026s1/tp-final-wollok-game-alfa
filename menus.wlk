@@ -1,41 +1,87 @@
 import objetosWollokGame.*
 import IA-Dificultades.*
-object menuPrincipal {
+class Menu {
     const property position = game.origin()
-    method image(){
-        return "menuPrincipal.png"
-    }
+    method image()
     method iniciar(){
         game.clear()
         game.addVisual(self)
-        keyboard.num1().onPressDo({modosDeJuego.iniciar()})
-	    keyboard.num2().onPressDo({instrucciones.iniciar()})
-	    keyboard.num3().onPressDo({creditos.iniciar()})
-        keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
-        keyboard.up().onPressDo({controlDeVolumen.aumentarVolumen()})
-        keyboard.down().onPressDo({controlDeVolumen.bajarVolumen()})
-    }
-}
-object modosDeJuego {
-    const property position = game.origin()
-    method image(){
-        return "modosDeJuego.png"
-    }
-    method iniciar(){
-        game.clear()
-        game.addVisual(self)
- 
-
-        keyboard.num1().onPressDo({modo1v1.iniciar()})
-        keyboard.num2().onPressDo({modoIAestandar.iniciar()})
-        keyboard.num3().onPressDo({modoIADificil.iniciar()})
-        keyboard.num4().onPressDo({modoIAExtrema.iniciar()})
-
         keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
         keyboard.up().onPressDo({controlDeVolumen.aumentarVolumen()})
         keyboard.down().onPressDo({controlDeVolumen.bajarVolumen()})
         keyboard.s().onPressDo({menuPrincipal.iniciar()})
+    }
+}
+class ModoIA {
+    method iniciar(){
+        tablero.setterIA(self.ia())
+        tablero.iniciar()
+    }
+    method ia()
+}
+class Victoria inherits Menu {
+    const property color
+    override method image(){
+        return "pantallaGanaste" + color + ".png"
+    }
+    override method iniciar(){
+        super()
+        game.sound("congratulations.mp3").play()
         keyboard.r().onPressDo({tablero.iniciar()})
+    }
+}
+object empate inherits Menu {
+    override method image(){
+        return "empate.png"
+    }
+    override method iniciar(){
+        super()
+        game.sound("youLose.mp3").play()
+        keyboard.r().onPressDo({tablero.iniciar(); tablero.cambiarTurno()})
+    }
+}
+object iaGanadora inherits Menu {
+    override method image(){
+        return "pantallaIaGano.png"
+    }
+    override method iniciar(){
+        super()
+        game.sound("youLose.mp3").play()
+        game.addVisual(self)
+        keyboard.r().onPressDo({tablero.iniciar()})
+    }
+}
+object menuPrincipal inherits Menu{
+    override method image(){
+        return "menuPrincipal.png"
+    }
+    override method iniciar(){
+        super()
+        keyboard.num1().onPressDo({modosDeJuego.iniciar()})
+	    keyboard.num2().onPressDo({instrucciones.iniciar()})
+	    keyboard.num3().onPressDo({creditos.iniciar()})
+    }
+}
+object modosDeJuego inherits Menu{
+    override method image(){
+        return "modosDeJuego.png"
+    }
+    override method iniciar(){
+        super()
+        keyboard.num1().onPressDo({modo1v1.iniciar()})
+        keyboard.num2().onPressDo({modoIAestandar.iniciar()})
+        keyboard.num3().onPressDo({modoIADificil.iniciar()})
+        keyboard.num4().onPressDo({modoIAExtrema.iniciar()})
+    }
+}
+object instrucciones inherits Menu{
+    override method image(){
+        return "instrucciones.png"
+    }
+}
+object creditos inherits Menu{
+    override method image(){
+        return "creditos.png"
     }
 }
 object modo1v1 {
@@ -44,54 +90,19 @@ object modo1v1 {
         tablero.setterIA(null)
     }
 }
-object modoIAestandar {
-    method iniciar() {
-        const ia = new IA(color="Verde", dificultad=extrema)
-        tablero.setterIA(ia)
-        tablero.iniciar()
+object modoIAestandar inherits ModoIA {
+    override method ia(){
+        return new IA(color="Verde", dificultad=extrema)
     }
 }
-object modoIADificil {
-    method iniciar(){
-        const ia = new IA(color="Verde", dificultad=dificil)
-        tablero.setterIA(ia)
-        tablero.iniciar()
+object modoIADificil inherits ModoIA {
+    override method ia(){
+        return new IA(color="Verde", dificultad=dificil)
     }
 }
-
-object modoIAExtrema {
-    method iniciar(){
-        const ia = new IA(color="Verde", dificultad=extrema)
-        tablero.setterIA(ia)
-        tablero.iniciar()
-    }
-}
-object instrucciones {
-    const property position = game.origin()
-    method image(){
-        return "instrucciones.png"
-    }
-    method iniciar(){
-        game.clear()
-        game.addVisual(self)
-        keyboard.s().onPressDo({menuPrincipal.iniciar()})
-        keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
-        keyboard.up().onPressDo({controlDeVolumen.aumentarVolumen()})
-        keyboard.down().onPressDo({controlDeVolumen.bajarVolumen()})        
-    }
-}
-object creditos {
-    const property position = game.origin()
-    method image(){
-        return "creditos.png"
-    }
-    method iniciar(){
-        game.clear()
-        game.addVisual(self)
-        keyboard.s().onPressDo({menuPrincipal.iniciar()})
-        keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
-        keyboard.up().onPressDo({controlDeVolumen.aumentarVolumen()})
-        keyboard.down().onPressDo({controlDeVolumen.bajarVolumen()})
+object modoIAExtrema inherits ModoIA {
+    override method ia(){
+        return new IA(color="Verde", dificultad=extrema)
     }
 }
 object controlDeVolumen {
