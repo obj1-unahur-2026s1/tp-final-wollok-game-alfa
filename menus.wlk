@@ -47,7 +47,6 @@ object iaGanadora inherits Menu {
     override method iniciar(){
         super()
         game.sound("youLose.mp3").play()
-        game.addVisual(self)
         keyboard.r().onPressDo({tablero.iniciar()})
     }
 }
@@ -92,7 +91,7 @@ object modo1v1 {
 }
 object modoIAestandar inherits ModoIA {
     override method ia(){
-        return new IA(color="Verde", dificultad=extrema)
+        return new IA(color="Verde", dificultad=estandar)
     }
 }
 object modoIADificil inherits ModoIA {
