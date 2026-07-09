@@ -1,9 +1,13 @@
 import wollok.game.*
 import menus.*
 import IA-Dificultades.*
+
+// ===============================================
+// CONFIGURACION GLOBAL DEL JUEGO
+// ===============================================
 object cuatroEnLinea{
 
-  //Config Audio
+  //Configuracion de Audio
   const music = game.sound("InideGame.mp3")
   method music(){
     return music
@@ -11,13 +15,13 @@ object cuatroEnLinea{
 
   method iniciar(){
 
-    //Set game properties
+    //Configuracion de la pantalla del juego
     game.title("CuatroEnLinea")
     game.width(7)
 	  game.height(9)
     game.cellSize(200)
     
-    //Set Background Audio
+    //Reproduccion de musica de fondo 
     music.shouldLoop(true)
     music.volume(controlDeVolumen.volumen())
     music.play()
@@ -26,11 +30,35 @@ object cuatroEnLinea{
     menuPrincipal.iniciar()
   }
 }
+
+// ===================================================
+// CREACION DE CLASES DE DOMINIO (Modelos de objetos)
+// ===================================================
+
 class Ficha {
-  const property position
-  const property color 
+  var property position // Cambiado a var para poder modificarlo en la animación
+  const property color
+
   method image() = "ficha" + color + ".png"
+
+  method animarCaida(filaDestino) {
+    // Identificador único para el loop de esta ficha en particular 
+    // caidaFicha_ + self.identity().toString() es un identificador único para cada objeto, lo uso para que no se mezclen los eventos de animación de distintas fichas
+    const evento = "caidaFicha_" + self.identity().toString()
+
+    game.onTick(80, evento, {
+    if (position.y() > filaDestino) {
+    // Si todavía está más arriba de su destino, baja una posición
+      position = game.at(position.x(), position.y() - 1)
+    }
+    else {
+    // Cuando llega a la fila destino, frenamos el bucle de animación
+    game.removeTickEvent(evento)
+    }
+    })
+  }
 }
+
 class Jugador {
   const property color
   const property casillerosOcupados = []
@@ -39,6 +67,7 @@ class Jugador {
     casillerosOcupados.add(unCasillero)
   }
 }
+
 class Turno {
   const property color 
   method image(){
@@ -49,6 +78,11 @@ class Turno {
   }
   method position() = game.at(4.5,7)
 }
+
+
+// ======================================================
+// CREACION DE OBJETO TABLERO (Funcionalidad del juego)
+// ======================================================
 object tablero {
   var ultimaColumnaJugada=null
   var ia=null
@@ -76,7 +110,7 @@ object tablero {
   method ultimaColumnaJugada(){
     return ultimaColumnaJugada
   }
-
+  //inilizacion y flujo principal
   method iniciar(){
     marcador = new Turno(color = "Roja")
     game.clear()
@@ -90,6 +124,7 @@ object tablero {
     keyboard.m().onPressDo({controlDeVolumen.intercambiarMuteado()})
     keyboard.up().onPressDo({controlDeVolumen.aumentarVolumen()})
     keyboard.down().onPressDo({controlDeVolumen.bajarVolumen()})
+
   }
   method limpiarColumnas(){
     columnas.forEach({c=> c.clear()})
@@ -134,19 +169,31 @@ object tablero {
  
   method agregarFicha(columna) {
     if (columnas.get(columna).size() >= 6) {
-      throw new Exception(message = "La columna está llena")
+    throw new Exception(message = "La columna está llena")
     }
-    const fila = columnas.get(columna).size() // Consigo la fila para el position de la ficha
-    const ficha = new Ficha(color = jugadorActual.color(),position=game.at(columna,fila))
-    columnas.get(columna).add(ficha) // Agrego la ficha y el visual
+
+    const filaDestino = columnas.get(columna).size()
+    const filaInicial = 7 // Altura desde donde empieza a "caer" la ficha
+
+    // 1. Creamos la ficha arriba de todo
+    const ficha = new Ficha(color = jugadorActual.color(),
+                  position = game.at(columna, filaInicial))
+
+    // 2. La agregamos a la matriz lógica y al tablero visual
+    columnas.get(columna).add(ficha)
     game.addVisual(ficha)
-  }
+
+    // 3. Ejecutamos la animación de caída
+    ficha.animarCaida(filaDestino)
+    }
   
   method realizarJugada(columna) {
     if (not tecladoBloqueado) {
+      
       if(not self.estaJugandoLaIA()) {
         ultimaColumnaJugada = columna //para la dificultad extrema, lo guarda para que la IA rompa las bolas
       }
+
       self.agregarFicha(columna)
       game.sound("caida.mp3").play()
       const fila = columnas.get(columna).size() - 1 
@@ -169,12 +216,15 @@ object tablero {
     }
   }
 
+
   method hayVictoria(columna,fila,color) { // Verifica todas las posibles victorias
     return self.hayVictoriaHorizontal(columna,fila,color) || self.hayVictoriaDiagonalDerecha(columna,fila,color) || self.hayVictoriaDiagonalIzquierda(columna,fila,color) || self.hayVictoriaVertical(columna,fila,color)
   }
   
   method esEmpate(){
     return columnas.all { col => col.size() >= 6}
+    
+    
   }
   
   method fichaEn(columna,fila) {
@@ -231,14 +281,17 @@ object tablero {
   }
 
   method columnaAleatoria() {
+
     const disponibles = []
     var i = 0
+
     columnas.forEach { col =>
         if(col.size() < 6) {
             disponibles.add(i)
         }
         i = i + 1
     }
+
     return disponibles.anyOne()
   }
 
@@ -246,24 +299,14 @@ object tablero {
     return columnas.get(columna).size() >= 6
   }
 
-  method agregarFichaTemporal(columna, color) { //Lo uso para detectar en jugada ganadora
+  method agregarFichaTemporal(columna, color) {//Lo uso para detectar en jugada ganadora
     columnas.get(columna).add(new Ficha(color = color, position = game.at(columna, columnas.get(columna).size())))
   }
 
-  method sacarFichaTemporal(columna) { //Lo uso para detectar en jugada ganadora
+  method sacarFichaTemporal(columna) {//Lo uso para detectar en jugada ganadora
     const col = columnas.get(columna)
     col.remove(col.last())
   }
+  
+  
 }
-// object empate {
-//   var property image = "empate.png"
-//   const property position = game.origin()
-//   const music = game.sound("youLose.mp3")
-//   method iniciar(){
-//     game.clear()    
-//     music.play()
-//     game.addVisual(self)
-//     keyboard.s().onPressDo({menuPrincipal.iniciar()})
-//     keyboard.r().onPressDo({tablero.iniciar(); tablero.cambiarTurno()})
-//   }
-// }
