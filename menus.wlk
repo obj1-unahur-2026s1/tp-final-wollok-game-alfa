@@ -13,11 +13,14 @@ class Menu {
     }
 }
 class ModoIA {
-    method iniciar(){
-        tablero.setterIA(self.ia())
+
+    method iniciar() {
+        ia.dificultad(self.dificultad())
+        tablero.setterIA(ia)
         tablero.iniciar()
     }
-    method ia()
+
+    method dificultad()
 }
 class Victoria inherits Menu {
     const property color
@@ -90,18 +93,18 @@ object modo1v1 {
     }
 }
 object modoIAestandar inherits ModoIA {
-    override method ia(){
-        return new IA(color="Verde", dificultad=estandar)
+    override method dificultad(){
+        return estandar
     }
 }
 object modoIADificil inherits ModoIA {
-    override method ia(){
-        return new IA(color="Verde", dificultad=dificil)
+    override method dificultad(){
+        return dificil
     }
 }
 object modoIAExtrema inherits ModoIA {
-    override method ia(){
-        return new IA(color="Verde", dificultad=extrema)
+    override method dificultad(){
+        return extrema
     }
 }
 object controlDeVolumen {
