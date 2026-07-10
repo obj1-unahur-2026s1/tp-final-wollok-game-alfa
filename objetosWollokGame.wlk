@@ -61,11 +61,7 @@ class Ficha {
 
 class Jugador {
   const property color
-  const property casillerosOcupados = []
   method image() = "jugador" + color + ".png"
-  method ocuparCasillero(unCasillero){
-    casillerosOcupados.add(unCasillero)
-  }
 }
 
 class Turno {
@@ -173,7 +169,7 @@ object tablero {
     }
 
     const filaDestino = columnas.get(columna).size()
-    const filaInicial = 7 // Altura desde donde empieza a "caer" la ficha
+    const filaInicial = 6 // Altura desde donde empieza a "caer" la ficha
 
     // 1. Creamos la ficha arriba de todo
     const ficha = new Ficha(color = jugadorActual.color(),
@@ -243,16 +239,16 @@ object tablero {
   method contar(columna,fila,dx,dy,color) {  // Paso por parametro la columna, fila y color. Además dx y dy son números para poder ir buscando en
     const ficha = self.fichaEn(columna,fila)   // las casillas lindantes
 
-    if (ficha == null || ficha.color() != color) { // Si en el método fichaEn retorno null retorna 0, cortando la recursividad
+    if (ficha == null || ficha.color() != color) { // si no hay fichas o no son de tu mismo color deja de sumar y devuelve. Si en el método fichaEn retorno null retorna 0, cortando la recursividad
       return 0                                     // Lo mismo si encuentra una ficha de otro color
     }
 
-    return 1 + self.contar(columna + dx,fila + dy, dx, dy, color) // Return recursivo para contar fichas
+    return 1 + self.contar(columna + dx,fila + dy, dx, dy, color) // Return recursivo para contar fichas. COLUMNA + DX hace que se mueva a la derecha o izqu. 
   }
 
   method hayVictoriaHorizontal(columna,fila,color) {
     return 1 + self.contar(columna + 1,fila,1,0,color) + self.contar(columna - 1,fila, -1, 0,color) >= 4
-  }         // El primer self.contar cuenta hacia la derecha y el segundo hacia la izquierda, al ser horizontal dy vale 0, ya que hay que moverse en la misma fila
+  }         // El primer self.contar cuenta hacia la derecha y el segundo hacia la izquierda al ser horizontal dy vale 0, ya que hay que moverse en la misma fila
 
   method hayVictoriaDiagonalDerecha(columna,fila,color) {
     return 1 + self.contar(columna + 1, fila - 1 , 1 , -1 , color) + self.contar(columna - 1, fila + 1 , -1 , 1 , color) >= 4
