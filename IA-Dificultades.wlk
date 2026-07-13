@@ -134,7 +134,7 @@ object extrema {
 
         var ultima=null
             // si es la columna 1 o la 7 le va a poner una ficha encima
-        if ((tablero.ultimaColumnaJugada() == 0 or tablero.ultimaColumnaJugada() == 6) and tablero.columnaLlena(tablero.ultimaColumnaJugada())){
+        if ((tablero.ultimaColumnaJugada() == 0 or tablero.ultimaColumnaJugada() == 6) and not tablero.columnaLlena(tablero.ultimaColumnaJugada())){
             ultima = tablero.ultimaColumnaJugada()
         }else{
             //si no es la columna 1 o la 7  le va a poner una ficha del lado que pueda
