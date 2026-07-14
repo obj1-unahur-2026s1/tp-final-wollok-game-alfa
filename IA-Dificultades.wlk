@@ -43,9 +43,9 @@ object estandar {
 }
 
 object dificil {
-
+    //primero busca tapar la jugada ganadora del jugador, si no hay luego buscará su jugada ganadora, si no hay busca una columna aleatoria
     method jugar(ia, tablero) {
-
+        
         const enemigo = tablero.oponente(ia)
         var jugada = self.buscarGanadora(enemigo, tablero)
 

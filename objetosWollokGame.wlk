@@ -61,7 +61,6 @@ class Ficha {
 
 class Jugador {
   const property color
-  method image() = "jugador" + color + ".png"
 }
 
 class Turno {
