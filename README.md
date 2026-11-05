@@ -1,3 +1,5 @@
+![Imagen de la facultad](assets/unahur.png)
+
 # Cuatro-en-Linea
 
 ## Equipo de desarrollo
